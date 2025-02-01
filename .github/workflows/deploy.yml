@@ -41,22 +41,15 @@ jobs:
             # 4. 기존 Docker 이미지 삭제
             - name: Remove old Docker image
               shell: powershell
-              continue-on-error: true # 삭제 실패 시에도 다음 단계로 진행
               run: |
                   $imageName = "${{ secrets.DOCKER_IMAGE_NAME }}"
-
-                  if (-not $imageName -or $imageName -eq "") {
-                      Write-Host "No image name provided. Skipping removal."
-                      exit 0
-                  }
-
                   try {
-                      Write-Host "Attempting to remove image: $imageName"
-                      docker rmi -f $imageName
-                      Write-Host "Image $imageName removed successfully."
+                    Write-Host "Attempting to remove image: $imageName"
+                    docker rmi -f $imageName
+                    Write-Host "Image $imageName removed successfully."
                   } catch {
-                      Write-Host "Failed to remove image: $imageName"
-                      Write-Host "Error: $_"
+                    Write-Host "Failed to remove image: $imageName"
+                    Write-Host "Error: $_"
                   }
 
             # 5. Docker 이미지 빌드
